@@ -1,8 +1,9 @@
 import express from 'express'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
-
 import api from './routes/api'
+import apiGames from './routes/saved_games'
+
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json())
 // })
 
 app.use('/api', api)
+app.use('/api', apiGames)
 
 app.get('/', (req, res) => {
   res.status(200).send('hello')

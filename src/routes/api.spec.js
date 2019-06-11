@@ -6,7 +6,13 @@ describe('API', () => {
   it('requesting /api gives a status ok', (done) => {
     request(app)
       .get('/api/')
-      .expect(200, { status: 'ok' }, done)
+      .expect(200, { status: 'ok' })
+      .end((err) => {
+        if (err) {
+          return done(err);
+        }
+        return done();
+      })
   })
 
   it('get empty user list', (done) => {
