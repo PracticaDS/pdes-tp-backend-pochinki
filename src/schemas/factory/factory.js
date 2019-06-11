@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const factory = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,
-  factory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Machine' }],
+  board: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Machine' }],
   size: { x: Number, y: Number },
   created_at: Date,
   updated_at: Date

@@ -31,6 +31,12 @@ router.get('/users/:id', async (req, res) => {
   res.json(user)
 })
 
+router.get('/users/auth/:username', async (req, res) => {
+  const user = await users.find({}, { username: req.params.username })
+  if (!user) res.status(404).json({ status: 'not-found' })
+  res.json(user)
+})
+
 router.post('/users',
   async (req, res) => {
     const User = mongoose.model('User')
