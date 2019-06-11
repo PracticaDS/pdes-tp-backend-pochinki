@@ -2,7 +2,9 @@ import mongoose from 'mongoose'
 
 const savedGame = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,
-  factory: { type: mongoose.Schema.Types.ObjectId, ref: 'Factory' },
+  factory: [],
+  size_x: Number,
+  size_y: Number,
   total_amount: Number,
   created_at: Date,
   updated_at: Date
