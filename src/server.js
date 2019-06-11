@@ -1,13 +1,8 @@
 import express from 'express'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
-import mongoose from 'mongoose'
-
 import api from './routes/api'
 
-mongoose.connect(
-  'mongodb://localhost/factorio'
-)
 
 const app = express()
 

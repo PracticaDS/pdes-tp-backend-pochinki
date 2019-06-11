@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import _ from 'lodash'
-import users from '../users/users'
+import mongoose from 'mongoose'
+import users from '../schemas/user/user_schema'
 
 const router = Router()
 
@@ -15,35 +16,39 @@ function validate(condition, message) {
 }
 
 
-function findUser(id, res, ifFound) {
-  const user = users.get(id);
-  if (!user) res.status(404).json({ status: 'not-found' })
-  ifFound(user)
-}
-
 router.get('/', (req, res) => {
   res.json({ status: 'ok' })
 })
 
-router.get('/users', (req, res) => {
-  res.json(users.getAll())
+router.get('/users', async (req, res) => {
+  const result = await users.find({})
+  res.send(result)
 })
 
-router.get('/users/:id', (req, res) => {
-  findUser(req.params.id, res, user => res.json(user))
+router.get('/users/:id', async (req, res) => {
+  const user = await users.findById(req.params.id)
+  if (!user) res.status(404).json({ status: 'not-found' })
+  res.json(user)
 })
 
-router.post('/users', [
-  (req, res) => res.json(users.add(req.body))
-])
+router.post('/users',
+  async (req, res) => {
+    const User = mongoose.model('User')
+    const newUsr = new User(req.body)
+    await res.json(newUsr.save())
+  }
+)
 
-router.put('/users/:id', [
-  (req, res) => findUser(req.params.id, res, () => res.json(users.update(req.params.id, req.body)))
-])
+router.put('/users/:id', async (req, res) => {
+  await users.updateOne({ _id: req.params.id }, { $set: req.body })
+  res.status(200).json({ status: 'OK' })
+})
 
-router.delete('/users', (req, res) => {
-  users.clear();
-  res.json(users.getAll());
+router.delete('/users/:id', async (req, res) => {
+  const user = await users.findById(req.params.id)
+  if (!user) res.status(404).json({ status: 'not-found' })
+  await user.remove()
+  res.json({ status: 'OK' })
 })
 
 export default router
