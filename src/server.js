@@ -1,12 +1,13 @@
 import express from 'express'
 import morgan from 'morgan'
+import cors from 'cors';
 import bodyParser from 'body-parser'
 import api from './routes/api'
 import apiGames from './routes/saved_games'
 
-
 const app = express()
 
+app.use(cors());
 app.use(morgan('dev'))
 
 app.use(bodyParser.urlencoded({ extended: false }))
