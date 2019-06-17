@@ -32,9 +32,13 @@ router.get('/users/:id', async (req, res) => {
 })
 
 router.get('/users/auth/:username', async (req, res) => {
-  const user = await users.find({}, { username: req.params.username })
-  if (!user) res.status(404).json({ status: 'not-found' })
-  res.json(user)
+  const user = await users.findOne({ username: req.params.username })
+  if (!user) {
+    console.log('NOT FOUND')
+    res.send(await users.create({ username: req.params.username }))
+  } else {
+    res.send(user)
+  }
 })
 
 router.post('/users',
